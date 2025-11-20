@@ -31,3 +31,27 @@ Ketiganya membentuk piramida layanan: IaaS di bagian terbawah sebagai fondasi, P
           |   Cloud-Native App      |
           | (Microservices, CI/CD)  |
           +--------------------------+
+
+3.
+
+
+| Program           | Waktu (detik) |
+|-------------------|--------------|
+| Asyncio           | 0.21         |
+| Multiprocessing   | 2.46         |
+
+
+Pada Python 3.14 free-threaded, kedua metode (asyncio dan multiprocessing) cukup efisien untuk pengambilan data paralel dari endpoint JSON. Multiprocessing memberikan performa optimal jika jumlah core banyak dan task I/O tinggi, sedangkan asyncio unggul untuk banyak permintaan network yang bersifat non-blocking.
+
+
+# Workspace GIL-enabled
+
+## Hasil Uji Pengambilan Data JSON
+
+| Program           | Waktu (detik) |
+|-------------------|--------------|
+| Asyncio           | 0.50         |
+| Multiprocessing   | 2.79         |
+
+Pada Python 3.14 dengan GIL, multiprocessing mengalami bottleneck pada I/O dan pembuatan proses baru, sehingga waktu bisa lebih lama dibandingkan asyncio. Asyncio cocok untuk komunikasi HTTP paralel dalam satu proses tanpa overhead proses baru.
+
